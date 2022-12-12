@@ -57,6 +57,31 @@ app.route("/articles")
     })
 });
 
+app.route("/articles/:articleTitle")
+
+.get((req,res) => {
+ Article.findOne({title: req.body.articleTitle}, (err,foundArticle) => {
+    if (foundArticle) {
+        res.send(foundArticle);
+    } else {
+        res.send("No articles found with such title");
+    }
+ })
+})
+
+.put((req,res) => {
+    Article.updateOne(
+        {title: req.params.articleTitle}, 
+        {title: req.body.title, content: req.body.content}, 
+        {overwrite: true}, (err) => {
+            if(!err){
+                res.send("Sucessfull updated article");
+            } else {
+                res.send(err);
+            }
+        })
+})
+
 app.listen(3000, () => {
     console.log("Server started on port 3000");
 });
