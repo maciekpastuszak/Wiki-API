@@ -82,6 +82,32 @@ app.route("/articles/:articleTitle")
         })
 })
 
+.patch((req,res) => {
+    Article.updateOne(
+        {title: req.params.articleTitle},
+        {$set: req.body},
+        (err) => {
+            if(!err){
+                res.send("Sucessfull updated article");
+            } else {
+                res.send(err);
+            }
+        }
+    )
+})
+
+.delete((req,res) => {
+    Article.deleteOne(
+        {title: req.params.articleTitle},
+        (err) => {
+        if(!err){
+            res.send("Sucessfull deleted article");
+        } else {
+            res.send(err);
+        }
+    })
+});
+
 app.listen(3000, () => {
     console.log("Server started on port 3000");
 });
